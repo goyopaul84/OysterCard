@@ -1,7 +1,7 @@
 require 'oystercard'
 
   describe Oystercard do
-    it 'has a balance of 0' do
+    it 'has a balance of £0' do
       expect(subject.balance).to eq(0)
     end
 
@@ -9,7 +9,7 @@ require 'oystercard'
     it "tops up by £5" do
       oystercard = Oystercard.new
       oystercard.top_up(5)
-      expect(subject.balance). to eq(5)
+      expect(oystercard.balance).to eq(5)
     end
   end
 end
