@@ -25,4 +25,9 @@ class Oystercard
   def touch_out
     @status = "Not in use"
   end
+
+  def in_journey?
+    return true if @status == "In use"
+    false
+  end
 end
