@@ -33,4 +33,12 @@ require 'oystercard'
       expect(oystercard).to have_attributes(:status => "In use")
     end
   end
+
+  describe '#touch_out' do
+    it "changes status to 'Not in use'" do
+      oystercard = Oystercard.new
+      oystercard.touch_out
+      expect(oystercard).to have_attributes(:status => "Not in use")
+    end
+  end
 end
