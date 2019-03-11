@@ -11,5 +11,10 @@ require 'oystercard'
       oystercard.top_up(5)
       expect(oystercard.balance).to eq(5)
     end
+    it "raises error if top-up takes balance over £90 max" do
+      oystercard = Oystercard.new
+      oystercard.top_up(Oystercard::MAXIMUM_BALANCE)
+      expect {oystercard.top_up(1) }.to raise_error('Maximum balance exceeded')
+    end
   end
 end
