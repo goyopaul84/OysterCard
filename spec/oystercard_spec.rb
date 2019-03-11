@@ -17,4 +17,12 @@ require 'oystercard'
       expect {oystercard.top_up(1) }.to raise_error('Maximum balance exceeded')
     end
   end
+
+  describe '#deduct' do
+    it "deducts £2" do
+      oystercard = Oystercard.new
+      oystercard.deduct(2)
+      expect(oystercard.balance).to eq(-2)
+    end
+  end 
 end
