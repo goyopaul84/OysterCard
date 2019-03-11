@@ -24,5 +24,13 @@ require 'oystercard'
       oystercard.deduct(2)
       expect(oystercard.balance).to eq(-2)
     end
-  end 
+  end
+
+  describe '#touch_in' do
+    it "changes status to 'In use'" do
+      oystercard = Oystercard.new
+      oystercard.touch_in
+      expect(oystercard).to have_attributes(:status => "In use")
+    end
+  end
 end
