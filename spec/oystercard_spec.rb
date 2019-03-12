@@ -19,34 +19,7 @@ require 'oystercard'
     end
   end
 
-  describe '#touch_in' do
-    it "changes status to 'In use'" do
-      oystercard = Oystercard.new
-      oystercard.top_up(Oystercard::MAXIMUM_BALANCE)
-      oystercard.touch_in(:station)
-      expect(oystercard).to have_attributes(:status => "In use")
-    end
-  end
-
-  describe '#touch_out' do
-    it "changes status to 'Not in use'" do
-      subject.touch_out
-      expect(subject).to have_attributes(:status => "Not in use")
-    end
-  end
-
   describe '#in_journey?' do
-    it "responds true if status is 'In use''" do
-      oystercard = Oystercard.new
-      oystercard.top_up(Oystercard::MAXIMUM_BALANCE)
-      oystercard.touch_in(station)
-      expect(oystercard.in_journey?).to eq true
-    end
-
-    it "responds false if status is 'Not in use'" do
-    oystercard = Oystercard.new
-    expect(oystercard.in_journey?).to eq false
-    end
 
     it "raises error when balance is less than minimum fare" do
       oystercard = Oystercard.new
@@ -70,6 +43,6 @@ require 'oystercard'
       subject.touch_in(:station)
       subject.touch_out
       expect(subject.entry_station).to eq nil
-    end 
+    end
   end
 end
