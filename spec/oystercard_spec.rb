@@ -29,7 +29,7 @@ require 'oystercard'
     it "charges the minimum fare upon touch out" do
       subject.top_up(Oystercard::MAXIMUM_BALANCE)
       subject.touch_in(station)
-      expect{subject.touch_out}.to change{subject.balance}.by(-Oystercard::MINIMUM_CHARGE)
+      expect{subject.touch_out(:station2)}.to change{subject.balance}.by(-Oystercard::MINIMUM_CHARGE)
     end
 
     it "remembers the entry station upon touch in" do
@@ -40,9 +40,23 @@ require 'oystercard'
 
     it "resets entry station to nil upon touch out" do
       subject.top_up(Oystercard::MAXIMUM_BALANCE)
-      subject.touch_in(:station)
-      subject.touch_out
+      subject.touch_in(:station1)
+      subject.touch_out(:station2)
       expect(subject.entry_station).to eq nil
     end
+
+    it "checks the card has an empty list of journeys by default" do
+      expect(subject.journey_history).to be_empty
+    end
+
+    it "writes the entry and exit stations to the journey history" do
+      subject.top_up(Oystercard::MAXIMUM_BALANCE)
+      subject.touch_in(:station1)
+      subject.touch_out(:station2)
+      expect(subject.journey_history).to eq ({:station1 => :station2})
+    end
+    # it "creates a completed journey after touch in/touch out" do
+    #   expect(subject.journey_history).to eq
+    # end
   end
 end
