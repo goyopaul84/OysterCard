@@ -1,6 +1,7 @@
 require 'oystercard'
 
   describe Oystercard do
+    let(:station) { double :station }
     it 'has a balance of £0' do
       expect(subject.balance).to eq(0)
     end
@@ -22,7 +23,7 @@ require 'oystercard'
     it "changes status to 'In use'" do
       oystercard = Oystercard.new
       oystercard.top_up(Oystercard::MAXIMUM_BALANCE)
-      oystercard.touch_in
+      oystercard.touch_in(:station)
       expect(oystercard).to have_attributes(:status => "In use")
     end
   end
@@ -38,7 +39,7 @@ require 'oystercard'
     it "responds true if status is 'In use''" do
       oystercard = Oystercard.new
       oystercard.top_up(Oystercard::MAXIMUM_BALANCE)
-      oystercard.touch_in
+      oystercard.touch_in(station)
       expect(oystercard.in_journey?).to eq true
     end
 
@@ -49,13 +50,26 @@ require 'oystercard'
 
     it "raises error when balance is less than minimum fare" do
       oystercard = Oystercard.new
-      expect{oystercard.touch_in}.to raise_error("Insufficient credit")
+      expect{oystercard.touch_in(station)}.to raise_error("Insufficient credit")
     end
 
     it "charges the minimum fare upon touch out" do
       subject.top_up(Oystercard::MAXIMUM_BALANCE)
-      subject.touch_in
+      subject.touch_in(station)
       expect{subject.touch_out}.to change{subject.balance}.by(-Oystercard::MINIMUM_CHARGE)
     end
+
+    it "remembers the entry station upon touch in" do
+      subject.top_up(Oystercard::MAXIMUM_BALANCE)
+      subject.touch_in(:station)
+      expect(subject.entry_station).to eq :station
+    end
+
+    it "resets entry station to nil upon touch out" do
+      subject.top_up(Oystercard::MAXIMUM_BALANCE)
+      subject.touch_in(:station)
+      subject.touch_out
+      expect(subject.entry_station).to eq nil
+    end 
   end
 end
