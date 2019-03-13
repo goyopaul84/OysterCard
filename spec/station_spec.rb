@@ -4,7 +4,6 @@ describe Station do
   let(:zone) { double :zone }
   it "exposes the name" do
     station = Station.new(name, zone)
-    p station.name
     expect(station.name).to eq name
   end
 
